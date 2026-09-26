@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { listFixture } from "../api/Fixture";
 import type { Fixture } from "../types/Fixture";
 
-type State = { rows: Fixture[]; loading: boolean; load: () => Promise<void> };
+type State = { rows: Fixture[]; loading: boolean; load: () => Promise<void>; replaceRows: (rows: Fixture[]) => void };
 
 export const useFixtureStore = create<State>((set) => ({
   rows: [],
@@ -10,5 +10,8 @@ export const useFixtureStore = create<State>((set) => ({
   async load() {
     set({ loading: true });
     set({ rows: await listFixture(), loading: false });
+  },
+  replaceRows(rows) {
+    set({ rows });
   }
 }));

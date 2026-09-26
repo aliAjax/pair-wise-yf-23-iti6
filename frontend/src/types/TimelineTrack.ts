@@ -5,4 +5,5 @@ export interface TimelineTrack {
   duration_ms: string;
   layer: string;
   locked: string;
+  updated_at: string;
 }

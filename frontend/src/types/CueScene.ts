@@ -6,4 +6,5 @@ export interface CueScene {
   hold_ms: string;
   priority: string;
   scene_status: string;
+  updated_at: string;
 }

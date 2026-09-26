@@ -40,6 +40,18 @@ frontend/src/api, stores, types, constants, constructors, components/common, hoo
 - `COMPOSE_PROJECT_NAME`: Compose 项目名，默认 `stage-light`
 - `FRONTEND_PORT`: 前端端口，默认 `20113`
 
+## 巡演换场（走场包导出 / 导入）
+
+舞台预览页 `/preview` 支持把选中的演出方案打包带走、到别的机器贴回继续改：
+
+- **导出**：选中方案后生成走场包 JSON（可复制或下载）。包内只留方案用到的灯具、场景和轨道，并带 `kind` 与格式版本号 `version`（当前 `v1`，见 `frontend/src/constants/transferFormat.ts`）。
+- **导入**：粘贴走场包 JSON 后依次核对——
+  1. 格式版本是否受支持；
+  2. 方案 / 轨道 / 场景引用的灯具和场景在导入后的数据里是否都在；
+  3. 是否有两盏灯占用同一段 DMX 地址（`dmx_address` 起连续 `channel_count` 个地址，段重叠即冲突）。
+
+  任一不通过只点出**第一条冲突**，当前数据照旧；全部通过才按编号合并：同编号保留 `updated_at` 较新的一份，已归档（`ARCHIVED`）场景不参与合并。
+- 涉及文件：`api/ShowTransfer.ts`（异步封装与日志）、`utils/showTransfer.ts`（校验与合并）、`utils/dmx.ts`（地址段冲突）、`constructors/ShowTransferConstructor.ts`（组包与引用解析）、`types/ShowTransfer.ts`、`hooks/useDmxAddressCheck.ts`、`pages/PreviewPage.tsx`。
 
 ## Docker 部署说明
 

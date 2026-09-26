@@ -1,8 +1,9 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+import type { Fixture } from "../types/Fixture";
+import { findFirstDmxConflict, type DmxConflict } from "../utils/dmx";
 
-export function useDmxAddressCheck<T>(rows: T[] = []) {
-  const [page, setPage] = useState(1);
-  const pageSize = 8;
-  const pageRows = useMemo(() => rows.slice((page - 1) * pageSize, page * pageSize), [rows, page]);
-  return { page, setPage, pageSize, pageRows, total: rows.length };
+/** 扫描灯具列表，返回第一对占用同一段 DMX 地址的灯具 */
+export function useDmxAddressCheck(fixtures: Fixture[]): { conflict: DmxConflict | null; hasConflict: boolean } {
+  const conflict = useMemo(() => findFirstDmxConflict(fixtures), [fixtures]);
+  return { conflict, hasConflict: conflict !== null };
 }
