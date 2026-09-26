@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { listCueScene } from "../api/CueScene";
 import type { CueScene } from "../types/CueScene";
 
-type State = { rows: CueScene[]; loading: boolean; load: () => Promise<void> };
+type State = { rows: CueScene[]; loading: boolean; load: () => Promise<void>; setRows: (rows: CueScene[]) => void };
 
 export const useCueSceneStore = create<State>((set) => ({
   rows: [],
@@ -10,5 +10,8 @@ export const useCueSceneStore = create<State>((set) => ({
   async load() {
     set({ loading: true });
     set({ rows: await listCueScene(), loading: false });
+  },
+  setRows(rows) {
+    set({ rows });
   }
 }));

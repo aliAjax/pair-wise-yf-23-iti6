@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { listShowProject } from "../api/ShowProject";
 import type { ShowProject } from "../types/ShowProject";
 
-type State = { rows: ShowProject[]; loading: boolean; load: () => Promise<void> };
+type State = { rows: ShowProject[]; loading: boolean; load: () => Promise<void>; setRows: (rows: ShowProject[]) => void };
 
 export const useShowProjectStore = create<State>((set) => ({
   rows: [],
@@ -10,5 +10,8 @@ export const useShowProjectStore = create<State>((set) => ({
   async load() {
     set({ loading: true });
     set({ rows: await listShowProject(), loading: false });
+  },
+  setRows(rows) {
+    set({ rows });
   }
 }));

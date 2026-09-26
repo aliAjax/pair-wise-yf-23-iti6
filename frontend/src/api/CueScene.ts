@@ -1,5 +1,5 @@
-import { mockData } from "../mocks/seedData";
 import type { CueScene } from "../types/CueScene";
+import { dbList, dbPut } from "../utils/db";
 
 const endpoint = "/api/cue-scene";
 
@@ -9,13 +9,13 @@ export async function listCueScene(): Promise<CueScene[]> {
       const res = await fetch(endpoint);
       if (res.ok) return await res.json();
     } catch {
-      // Local mock fallback keeps the UI available during offline review.
+      // Local IndexedDB fallback keeps the UI available during offline review.
     }
   }
-  return [...(mockData.cueScene as unknown as CueScene[])];
+  return dbList<CueScene>("cueScene");
 }
 
-export async function saveCueScene(payload: CueScene) {
+export async function saveCueScene(payload: CueScene): Promise<CueScene> {
   console.info("save CueScene", payload);
-  return payload;
+  return dbPut<CueScene>("cueScene", payload);
 }

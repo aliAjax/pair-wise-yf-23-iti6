@@ -1,5 +1,5 @@
-import { mockData } from "../mocks/seedData";
 import type { ShowProject } from "../types/ShowProject";
+import { dbList, dbPut } from "../utils/db";
 
 const endpoint = "/api/show-project";
 
@@ -9,13 +9,13 @@ export async function listShowProject(): Promise<ShowProject[]> {
       const res = await fetch(endpoint);
       if (res.ok) return await res.json();
     } catch {
-      // Local mock fallback keeps the UI available during offline review.
+      // Local IndexedDB fallback keeps the UI available during offline review.
     }
   }
-  return [...(mockData.showProject as unknown as ShowProject[])];
+  return dbList<ShowProject>("showProject");
 }
 
-export async function saveShowProject(payload: ShowProject) {
+export async function saveShowProject(payload: ShowProject): Promise<ShowProject> {
   console.info("save ShowProject", payload);
-  return payload;
+  return dbPut<ShowProject>("showProject", payload);
 }

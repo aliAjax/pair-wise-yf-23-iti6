@@ -51,8 +51,18 @@ frontend/src/api, stores, types, constants, constructors, components/common, hoo
 ## 枚举/常量出现位置清单
 
 - FixtureType: constants/FixtureType、types/FixtureType、constructors、logTemplates、errorMessages、筛选器、展示组件/控制器均有引用。
-- CueStatus: constants/CueStatus、types/CueStatus、constructors、logTemplates、errorMessages、筛选器、展示组件/控制器均有引用。
+- CueStatus: constants/CueStatus、types/CueStatus（含 `CUE_STATUS_ARCHIVED`，被 constructors/ProjectTransferConstructor、services/projectMergeService 引用，用于导出/合并时剔除已归档场景）、constructors、logTemplates、errorMessages、筛选器、展示组件/控制器均有引用。
 - ChannelMode: constants/ChannelMode、types/ChannelMode、constructors、logTemplates、errorMessages、筛选器、展示组件/控制器均有引用。
+- 演出方案携带内容（ld-613 巡演换场）：
+  - 格式常量 `PROJECT_TRANSFER_FORMAT` / `PROJECT_TRANSFER_VERSION`：constants/transferFormat.ts
+  - 传输结构类型：types/ProjectTransfer.ts
+  - 导入构造器：constructors/ProjectTransferConstructor.ts
+  - 校验/合并/导出服务：services/projectValidationService.ts、services/projectMergeService.ts、services/projectExportService.ts
+  - 控制器（包装异常、写日志）：controllers/ProjectTransferController.ts
+  - 错误码与消息模板：constants/transferErrors.ts、constants/errorCodes.ts、constants/errorMessages.ts
+  - 日志模板：constants/logTemplates.ts（ProjectTransfer 4 条）
+  - DMX 地址段工具：utils/dmx.ts
+  - 页面交互：hooks/useProjectTransfer.ts、components/common/ProjectTransferPanel.tsx、pages/PreviewPage.tsx
 
 ## 为什么会牵一发动全身
 
